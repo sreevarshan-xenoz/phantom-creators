@@ -245,29 +245,92 @@ class OptimizedFilamentStream extends FilamentStream {
 
 // Add IntersectionObserver for animation pausing
 document.addEventListener('DOMContentLoaded', () => {
-  const filamentContainer = document.getElementById('filament-stream');
-  if (!filamentContainer) return;
-  
-  const filamentStream = new OptimizedFilamentStream(filamentContainer);
-  
-  // Start animation
-  filamentStream.start();
-  
-  // Setup IntersectionObserver for performance
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        filamentStream.start();
-      } else {
-        filamentStream.stop();
+  try {
+    const filamentContainer = document.getElementById('filament-stream');
+    if (!filamentContainer) {
+      console.warn('Filament stream container not found in DOM');
+      return;
+    }
+    
+    // Create a fallback if canvas creation fails
+    try {
+      const filamentStream = new OptimizedFilamentStream(filamentContainer);
+      
+      // Start animation
+      filamentStream.start();
+      
+      // Setup IntersectionObserver for performance
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              filamentStream.start();
+            } else {
+              filamentStream.stop();
+            }
+          });
+        }, {
+          threshold: 0.1 // React when at least 10% of the element is visible
+        });
+        
+        observer.observe(filamentContainer);
       }
-    });
-  }, {
-    threshold: 0.1 // React when at least 10% of the element is visible
-  });
-  
-  observer.observe(filamentContainer);
-  
-  // Add global references for debugging
-  window.filamentStream = filamentStream;
+      
+      // Add global references for debugging
+      window.filamentStream = filamentStream;
+    } catch (error) {
+      console.error('Error initializing filament stream:', error);
+      
+      // Create simple fallback animation
+      const fallbackAnimation = document.createElement('div');
+      fallbackAnimation.className = 'fallback-animation';
+      fallbackAnimation.innerHTML = `
+        <div class="fallback-particle"></div>
+        <div class="fallback-particle"></div>
+        <div class="fallback-particle"></div>
+      `;
+      filamentContainer.appendChild(fallbackAnimation);
+      
+      // Add fallback styles
+      const styleEl = document.createElement('style');
+      styleEl.textContent = `
+        .fallback-animation {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+        }
+        .fallback-particle {
+          position: absolute;
+          width: 15px;
+          height: 15px;
+          background: #00ff8c;
+          border-radius: 50%;
+          filter: blur(5px);
+          animation: fallbackFloat 5s infinite;
+        }
+        .fallback-particle:nth-child(1) {
+          left: 10%;
+          animation-delay: 0s;
+        }
+        .fallback-particle:nth-child(2) {
+          left: 50%;
+          animation-delay: 1.5s;
+        }
+        .fallback-particle:nth-child(3) {
+          left: 80%;
+          animation-delay: 3s;
+        }
+        @keyframes fallbackFloat {
+          0% { top: 110%; opacity: 0.7; }
+          100% { top: -10%; opacity: 0; }
+        }
+      `;
+      document.head.appendChild(styleEl);
+    }
+  } catch (error) {
+    console.error('Fatal error in filament stream initialization:', error);
+  }
 }); 

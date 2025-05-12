@@ -6,6 +6,23 @@
     <title>Phantom Creators - 3D Printing Portal</title>
     <link rel="stylesheet" href="./css/styles.css">
     <meta name="description" content="Advanced 3D printing simulation and visualization platform">
+    <script>
+        // Error handler to diagnose loading issues
+        window.addEventListener('error', function(e) {
+            console.error('Script Error:', e.message, 'in', e.filename, 'line', e.lineno);
+            const errorDiv = document.createElement('div');
+            errorDiv.style.position = 'fixed';
+            errorDiv.style.bottom = '10px';
+            errorDiv.style.left = '10px';
+            errorDiv.style.backgroundColor = 'rgba(255,0,0,0.8)';
+            errorDiv.style.color = 'white';
+            errorDiv.style.padding = '10px';
+            errorDiv.style.borderRadius = '5px';
+            errorDiv.style.zIndex = '9999';
+            errorDiv.textContent = `Error: ${e.message} in ${e.filename.split('/').pop()} line ${e.lineno}`;
+            document.body.appendChild(errorDiv);
+        });
+    </script>
 </head>
 <body>
     <header class="cyber-header">
@@ -117,6 +134,8 @@
             <div class="upload-container">
                 <label for="model-upload" class="glow-button">Upload STL File</label>
                 <input type="file" id="model-upload" accept=".stl" aria-label="Upload 3D model file">
+                <span class="or-separator">or</span>
+                <button id="try-demo-btn" class="glow-button">Try Demo Models</button>
             </div>
         </section>
 
@@ -184,5 +203,58 @@
     <script src="./js/print-state-manager.js"></script>
     <script src="./js/docs.js"></script>
     <script src="./js/main.js"></script>
+    <script src="./js/demo.js"></script>
+    
+    <!-- Initialize the application -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create global fallback if structure doesn't exist
+            if (!window.PhantomCreators) {
+                console.warn('PhantomCreators global object not found, creating fallback');
+                window.PhantomCreators = {
+                    config: {
+                        debug: true,
+                        autoStartAnimation: true
+                    },
+                    components: {},
+                    init: function() {
+                        console.log('Initializing with fallback structure');
+                    }
+                };
+            }
+            
+            // Initialize the main application
+            try {
+                if (typeof PhantomCreators.init === 'function') {
+                    PhantomCreators.init();
+                }
+            } catch (error) {
+                console.error('Error initializing main application:', error);
+            }
+            
+            // Add terminal status message
+            const terminal = document.getElementById('terminal-output');
+            if (terminal) {
+                terminal.textContent = '> Ready to analyze models. Try the demo mode or upload an STL file.';
+            }
+            
+            // Hide loading spinner that might be stuck
+            setTimeout(function() {
+                var loadingContainer = document.getElementById('loading-container');
+                if (loadingContainer) {
+                    loadingContainer.classList.add('hidden');
+                }
+                
+                // If demo mode exists, make sure it's initialized
+                if (window.PhantomCreatorsDemo && typeof window.PhantomCreatorsDemo.init === 'function') {
+                    // Check if already initialized
+                    if (!window.PhantomCreatorsDemo.initialized) {
+                        window.PhantomCreatorsDemo.init();
+                        window.PhantomCreatorsDemo.initialized = true;
+                    }
+                }
+            }, 2000);
+        });
+    </script>
 </body>
 </html> 

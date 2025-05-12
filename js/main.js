@@ -476,7 +476,39 @@ const PhantomCreators = {
   }
 };
 
-// Initialize application when DOM is ready
+// Initialize app after loading all dependencies
 document.addEventListener('DOMContentLoaded', () => {
-  PhantomCreators.init();
+  // Check if Three.js is loaded properly
+  if (typeof THREE === 'undefined') {
+    console.error('Three.js is not loaded correctly. Loading fallback version.');
+    
+    // Load Three.js dynamically as fallback
+    const threeScript = document.createElement('script');
+    threeScript.src = 'https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js';
+    document.head.appendChild(threeScript);
+    
+    // Load STLLoader after Three.js
+    threeScript.onload = () => {
+      const stlLoaderScript = document.createElement('script');
+      stlLoaderScript.src = 'https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/STLLoader.js';
+      document.head.appendChild(stlLoaderScript);
+      
+      // Initialize after loading dependencies
+      stlLoaderScript.onload = () => {
+        PhantomCreators.init();
+      };
+    };
+  } else {
+    // Initialize if Three.js is already loaded
+    PhantomCreators.init();
+  }
+  
+  // Add timeout to hide loading indicators that might be stuck
+  setTimeout(() => {
+    const loadingContainer = document.getElementById('loading-container');
+    if (loadingContainer && !loadingContainer.classList.contains('hidden')) {
+      console.log('Hiding stuck loading indicator');
+      loadingContainer.classList.add('hidden');
+    }
+  }, 3000);
 }); 
