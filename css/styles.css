@@ -949,4 +949,542 @@ input[type="range"]:focus {
     nav ul {
         flex-wrap: wrap;
     }
+}
+
+/* 3D Printing Technology Section Styles */
+#printing-tech {
+    padding: 4rem 2rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-top: 1px solid rgba(0, 255, 140, 0.3);
+    border-bottom: 1px solid rgba(0, 255, 140, 0.3);
+}
+
+#printing-tech h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.tech-showcase {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.tech-card {
+    flex: 1;
+    min-width: 280px;
+    background-color: rgba(10, 10, 18, 0.8);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 140, 0.3);
+    padding: 2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.tech-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #00ff8c, transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tech-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.tech-card:hover::before {
+    opacity: 1;
+}
+
+.tech-icon {
+    color: #00ff8c;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.tech-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.tech-card p {
+    color: #b3b3cc;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    flex: 1;
+}
+
+.tech-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tech-specs span {
+    background-color: rgba(0, 255, 140, 0.1);
+    border: 1px solid rgba(0, 255, 140, 0.3);
+    border-radius: 4px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    color: #00ff8c;
+}
+
+/* Printing Status Section */
+.printing-live-status {
+    margin: 4rem 0;
+}
+
+.printing-live-status h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.status-card {
+    background-color: rgba(10, 10, 18, 0.8);
+    border-radius: 8px;
+    border: 1px solid rgba(100, 100, 140, 0.3);
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.status-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 255, 140, 0.5);
+}
+
+.status-card.active {
+    border-color: rgba(0, 255, 140, 0.5);
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #00ff8c;
+    margin-top: 6px;
+    position: relative;
+}
+
+.status-indicator::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    background-color: rgba(0, 255, 140, 0.3);
+    animation: pulse 2s infinite;
+}
+
+.status-indicator.idle {
+    background-color: #b3b3cc;
+}
+
+.status-indicator.idle::after {
+    display: none;
+}
+
+.status-details {
+    flex: 1;
+}
+
+.status-details h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.status-details p {
+    color: #b3b3cc;
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff8c, #00b364);
+    border-radius: 4px;
+    transition: width 0.5s ease-in-out;
+}
+
+.status-meta {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Materials Showcase */
+.materials-showcase {
+    margin-top: 4rem;
+}
+
+.materials-showcase h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.material-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.material-card {
+    background-color: rgba(10, 10, 18, 0.8);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.material-card:hover {
+    transform: translateY(-5px);
+}
+
+.material-sample {
+    height: 120px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.material-sample::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 40%);
+}
+
+.material-card h4 {
+    padding: 1rem 1rem 0.5rem 1rem;
+    margin: 0;
+    color: #ffffff;
+}
+
+.material-card p {
+    padding: 0 1rem 1rem 1rem;
+    margin: 0;
+    color: #b3b3cc;
+    font-size: 0.9rem;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+}
+
+/* Responsive Adjustments for 3D Printing Section */
+@media (max-width: 992px) {
+    .tech-showcase {
+        flex-direction: column;
+    }
+    
+    .tech-card {
+        min-width: 100%;
+    }
+    
+    .status-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    #printing-tech {
+        padding: 3rem 1rem;
+    }
+    
+    .material-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .material-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Featured Prints Gallery Styles */
+#featured-prints {
+    padding: 4rem 2rem;
+    background-color: rgba(10, 10, 18, 0.8);
+}
+
+#featured-prints h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.section-intro {
+    text-align: center;
+    color: #b3b3cc;
+    margin-bottom: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gallery-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gallery-nav {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(0, 255, 140, 0.1);
+    border: 1px solid rgba(0, 255, 140, 0.3);
+    color: #00ff8c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.gallery-nav:hover {
+    background-color: rgba(0, 255, 140, 0.2);
+    transform: scale(1.1);
+}
+
+.gallery-categories {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.category-btn {
+    background-color: transparent;
+    border: 1px solid rgba(100, 100, 140, 0.3);
+    border-radius: 20px;
+    padding: 0.5rem 1.25rem;
+    color: #b3b3cc;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.category-btn:hover,
+.category-btn.active {
+    background-color: rgba(0, 255, 140, 0.1);
+    border-color: #00ff8c;
+    color: #00ff8c;
+}
+
+.prints-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto 2rem auto;
+}
+
+.gallery-item {
+    background-color: rgba(18, 18, 28, 0.8);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #00ff8c, #00b364);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease-out;
+}
+
+.gallery-item:hover::after {
+    transform: scaleX(1);
+}
+
+.gallery-image {
+    height: 250px;
+    overflow: hidden;
+}
+
+.gallery-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.gallery-item:hover .gallery-image img {
+    transform: scale(1.1);
+}
+
+.gallery-info {
+    padding: 1.5rem;
+}
+
+.gallery-info h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    color: #00ff8c;
+}
+
+.gallery-desc {
+    color: #b3b3cc;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.gallery-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.85rem;
+}
+
+.meta-label {
+    color: #b3b3cc;
+    margin-right: 0.25rem;
+}
+
+.print-material,
+.print-time {
+    color: #ffffff;
+}
+
+.view-details-btn {
+    width: 100%;
+    text-align: center;
+    background-color: rgba(0, 255, 140, 0.1);
+    transition: background-color 0.3s;
+}
+
+.view-details-btn:hover {
+    background-color: rgba(0, 255, 140, 0.2);
+}
+
+.gallery-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+}
+
+.page-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.page-dot.active,
+.page-dot:hover {
+    background-color: #00ff8c;
+    transform: scale(1.2);
+}
+
+.cta-container {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.cta-container p {
+    color: #b3b3cc;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+/* Responsive adjustments for the gallery */
+@media (max-width: 992px) {
+    .gallery-controls {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .gallery-categories {
+        order: -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .prints-gallery {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .gallery-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 } 

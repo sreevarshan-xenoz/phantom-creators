@@ -49,6 +49,120 @@
             <div id="filament-stream" aria-label="Animated filament flow visualization" aria-hidden="true"></div>
         </section>
 
+        <!-- 3D Printing Elements Section -->
+        <section id="printing-tech">
+            <h2>Cutting-Edge <span class="highlight">Printing Technology</span></h2>
+            
+            <div class="tech-showcase">
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path fill="currentColor" d="M19 2c0-1.1-.9-2-2-2H7C5.9 0 5 .9 5 2v16l7 3 7-3V2zm-2 0v7h-2V2h2zm-6 15.82l-5-2.15V2h3v6h2V2h3v15.82l-3 1.23z"/>
+                        </svg>
+                    </div>
+                    <h3>FDM Printing</h3>
+                    <p>Layer-by-layer precision with a wide range of filament options for durability and flexibility</p>
+                    <div class="tech-specs">
+                        <span>0.1mm precision</span>
+                        <span>7 material types</span>
+                        <span>200x200x200mm build volume</span>
+                    </div>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path fill="currentColor" d="M21.1 9l-2.8-4c-.3-.4-.8-.7-1.3-.7H7c-.5 0-1 .3-1.3.7l-2.8 4c-.2.3-.3.6-.3 1 0 1.1.9 2 2 2h2v8h10v-8h2c1.1 0 2-.9 2-2 0-.4-.1-.7-.3-1zm-11.6 9v-8H5.9L8 6h8l2.1 4H11.5v8h-2z"/>
+                        </svg>
+                    </div>
+                    <h3>SLA Resin Printing</h3>
+                    <p>Ultra-high detail printing for miniatures, jewelry designs, and precision components</p>
+                    <div class="tech-specs">
+                        <span>0.025mm precision</span>
+                        <span>5 resin types</span>
+                        <span>120x120x150mm build volume</span>
+                    </div>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <svg viewBox="0 0 24 24" width="48" height="48">
+                            <path fill="currentColor" d="M12 3L2 12h3v8h14v-8h3L12 3zm-3 13v-7h2v7H9zm4 0v-7h2v7h-2z"/>
+                        </svg>
+                    </div>
+                    <h3>Multi-Material Printing</h3>
+                    <p>Create complex models with multiple colors and materials in a single print job</p>
+                    <div class="tech-specs">
+                        <span>4 materials simultaneously</span>
+                        <span>0.15mm precision</span>
+                        <span>180x180x180mm build volume</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="printing-live-status">
+                <h3>Live Printing Status</h3>
+                <div class="status-grid">
+                    <div class="status-card active">
+                        <div class="status-indicator"></div>
+                        <div class="status-details">
+                            <h4>Printer 1 (FDM)</h4>
+                            <p>Currently printing: Mechanical Parts</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 67%"></div>
+                            </div>
+                            <p class="status-meta">67% complete • 2h 15m remaining</p>
+                        </div>
+                    </div>
+                    <div class="status-card active">
+                        <div class="status-indicator"></div>
+                        <div class="status-details">
+                            <h4>Printer 2 (SLA)</h4>
+                            <p>Currently printing: Jewelry Prototypes</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 23%"></div>
+                            </div>
+                            <p class="status-meta">23% complete • 5h 40m remaining</p>
+                        </div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-indicator idle"></div>
+                        <div class="status-details">
+                            <h4>Printer 3 (Multi-Material)</h4>
+                            <p>Status: Ready</p>
+                            <p class="status-meta">Available for next job</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="materials-showcase">
+                <h3>Featured Materials</h3>
+                <div class="material-cards">
+                    <div class="material-card">
+                        <div class="material-sample" style="background: linear-gradient(135deg, #00ff8c, #005c32)"></div>
+                        <h4>Carbon Fiber PLA</h4>
+                        <p>Ultra-strong, lightweight material for functional parts</p>
+                    </div>
+                    <div class="material-card">
+                        <div class="material-sample" style="background: linear-gradient(135deg, #ff6b6b, #8c0000)"></div>
+                        <h4>Flexible TPU</h4>
+                        <p>Elastic properties for parts that need to bend and flex</p>
+                    </div>
+                    <div class="material-card">
+                        <div class="material-sample" style="background: linear-gradient(135deg, #6b8cff, #00248c)"></div>
+                        <h4>Clear PETG</h4>
+                        <p>Transparent material with excellent durability</p>
+                    </div>
+                    <div class="material-card">
+                        <div class="material-sample" style="background: linear-gradient(135deg, #c6c6c6, #3c3c3c)"></div>
+                        <h4>Metal-Infused PLA</h4>
+                        <p>Metallic finish with polishable properties</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="services">
             <h2>Our <span class="highlight">Services</span></h2>
             <div class="service-grid">
@@ -141,6 +255,111 @@
                 <input type="file" id="model-upload" accept=".stl" aria-label="Upload 3D model file">
                 <span class="or-separator">or</span>
                 <button id="try-demo-btn" class="glow-button">Try Demo Models</button>
+            </div>
+        </section>
+
+        <!-- Featured Prints Gallery Section -->
+        <section id="featured-prints">
+            <h2>Featured <span class="highlight">Projects</span></h2>
+            <p class="section-intro">Explore our recent client projects and showcase prints</p>
+            
+            <div class="gallery-controls">
+                <button class="gallery-nav prev" aria-label="Previous project">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                    </svg>
+                </button>
+                
+                <div class="gallery-categories">
+                    <button class="category-btn active" data-category="all">All Projects</button>
+                    <button class="category-btn" data-category="mechanical">Mechanical</button>
+                    <button class="category-btn" data-category="artistic">Artistic</button>
+                    <button class="category-btn" data-category="prototype">Prototypes</button>
+                </div>
+                
+                <button class="gallery-nav next" aria-label="Next project">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="prints-gallery">
+                <div class="gallery-item" data-category="mechanical">
+                    <div class="gallery-image">
+                        <img src="./img/print-mechanical-1.jpg" alt="Industrial robot arm prototype" 
+                             onerror="this.src='https://via.placeholder.com/400x300/12121c/00ff8c?text=Robot+Arm+Prototype'">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Robot Arm Prototype</h3>
+                        <p class="gallery-desc">Multi-jointed mechanical arm with precision-engineered moving parts</p>
+                        <div class="gallery-meta">
+                            <span class="print-material"><span class="meta-label">Material:</span> Carbon Fiber PLA</span>
+                            <span class="print-time"><span class="meta-label">Print Time:</span> 32 hours</span>
+                        </div>
+                        <a href="pages/products.html" class="cyber-button view-details-btn">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="artistic">
+                    <div class="gallery-image">
+                        <img src="./img/print-artistic-1.jpg" alt="Cyberpunk cityscape model" 
+                             onerror="this.src='https://via.placeholder.com/400x300/12121c/00ff8c?text=Cyberpunk+Cityscape'">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Cyberpunk Cityscape</h3>
+                        <p class="gallery-desc">Highly detailed urban landscape with over 200 unique buildings</p>
+                        <div class="gallery-meta">
+                            <span class="print-material"><span class="meta-label">Material:</span> Translucent PETG</span>
+                            <span class="print-time"><span class="meta-label">Print Time:</span> 48 hours</span>
+                        </div>
+                        <a href="pages/products.html" class="cyber-button view-details-btn">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="prototype">
+                    <div class="gallery-image">
+                        <img src="./img/print-prototype-1.jpg" alt="Drone body prototype" 
+                             onerror="this.src='https://via.placeholder.com/400x300/12121c/00ff8c?text=Drone+Prototype'">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Lightweight Drone Frame</h3>
+                        <p class="gallery-desc">Aerodynamic drone body designed for maximum stability and minimal weight</p>
+                        <div class="gallery-meta">
+                            <span class="print-material"><span class="meta-label">Material:</span> Lightweight ABS</span>
+                            <span class="print-time"><span class="meta-label">Print Time:</span> 26 hours</span>
+                        </div>
+                        <a href="pages/products.html" class="cyber-button view-details-btn">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="mechanical">
+                    <div class="gallery-image">
+                        <img src="./img/print-mechanical-2.jpg" alt="Custom gearbox assembly" 
+                             onerror="this.src='https://via.placeholder.com/400x300/12121c/00ff8c?text=Custom+Gearbox'">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Custom Gearbox Assembly</h3>
+                        <p class="gallery-desc">Precision interlocking gears with 0.2mm tolerance for smooth operation</p>
+                        <div class="gallery-meta">
+                            <span class="print-material"><span class="meta-label">Material:</span> Metal-infused PLA</span>
+                            <span class="print-time"><span class="meta-label">Print Time:</span> 18 hours</span>
+                        </div>
+                        <a href="pages/products.html" class="cyber-button view-details-btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-pagination">
+                <span class="page-dot active"></span>
+                <span class="page-dot"></span>
+                <span class="page-dot"></span>
+                <span class="page-dot"></span>
+            </div>
+            
+            <div class="cta-container">
+                <p>Want to see your project here? We're ready to bring your ideas to life.</p>
+                <a href="pages/products.html" class="glow-button">Start Your Print</a>
             </div>
         </section>
 

@@ -511,4 +511,359 @@ document.addEventListener('DOMContentLoaded', () => {
       loadingContainer.classList.add('hidden');
     }
   }, 3000);
+});
+
+// 3D Printing Status Simulation
+function initPrintingStatusSimulation() {
+    // Check if the printing status elements exist
+    const statusCards = document.querySelectorAll('.status-card.active');
+    if (!statusCards.length) return;
+
+    // Update progress bars and times every 30 seconds
+    function updatePrintingStatus() {
+        statusCards.forEach(card => {
+            const progressBar = card.querySelector('.progress');
+            const statusMeta = card.querySelector('.status-meta');
+            
+            if (progressBar && statusMeta) {
+                // Get current progress
+                let currentWidth = parseInt(progressBar.style.width);
+                if (isNaN(currentWidth)) currentWidth = 0;
+                
+                // Increment progress by a small random amount (0.5% to 1.5%)
+                const increment = Math.random() * 1 + 0.5;
+                let newWidth = Math.min(currentWidth + increment, 100);
+                
+                // Update progress bar
+                progressBar.style.width = newWidth + '%';
+                
+                // Parse current status to extract completion percentage and time
+                const statusText = statusMeta.textContent;
+                const percentMatch = statusText.match(/(\d+)%/);
+                const timeMatch = statusText.match(/(\d+)h\s+(\d+)m/);
+                
+                if (percentMatch && timeMatch) {
+                    const currentPercent = parseInt(percentMatch[1]);
+                    const hours = parseInt(timeMatch[1]);
+                    const minutes = parseInt(timeMatch[2]);
+                    
+                    // Calculate new percentage based on progress bar
+                    const newPercent = Math.round(newWidth);
+                    
+                    // Calculate new time remaining (reduce proportionally)
+                    let totalMinutes = hours * 60 + minutes;
+                    const percentComplete = newPercent / 100;
+                    const percentRemaining = 1 - percentComplete;
+                    
+                    // Adjust remaining time based on original estimate and completion percentage
+                    const originalTotalMinutes = totalMinutes / (1 - (currentPercent / 100));
+                    const newTotalMinutes = Math.max(0, Math.round(originalTotalMinutes * percentRemaining));
+                    
+                    const newHours = Math.floor(newTotalMinutes / 60);
+                    const newMinutes = newTotalMinutes % 60;
+                    
+                    // Update status text
+                    statusMeta.textContent = `${newPercent}% complete • ${newHours}h ${newMinutes}m remaining`;
+                    
+                    // If print is complete, update status
+                    if (newPercent >= 100) {
+                        const statusIndicator = card.querySelector('.status-indicator');
+                        const statusDetails = card.querySelector('.status-details p');
+                        
+                        if (statusIndicator) {
+                            statusIndicator.classList.add('idle');
+                        }
+                        
+                        if (statusDetails) {
+                            statusDetails.textContent = 'Status: Completed';
+                        }
+                        
+                        statusMeta.textContent = 'Ready for pickup';
+                        
+                        // Remove from active cards
+                        card.classList.remove('active');
+                    }
+                }
+            }
+        });
+    }
+    
+    // Initial update
+    updatePrintingStatus();
+    
+    // Set interval for updates (every 30 seconds)
+    const updateInterval = setInterval(updatePrintingStatus, 30000);
+    
+    // Add a listener to stop updates if the page is hidden
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            clearInterval(updateInterval);
+        } else {
+            // Restart interval when tab becomes visible again
+            clearInterval(updateInterval);
+            updatePrintingStatus();
+            setInterval(updatePrintingStatus, 30000);
+        }
+    });
+}
+
+// Sample available printer selection functionality
+function initAvailablePrinterSelection() {
+    const idlePrinter = document.querySelector('.status-card:not(.active)');
+    if (!idlePrinter) return;
+    
+    idlePrinter.addEventListener('click', function() {
+        // Show a notification that this printer is available
+        const printerName = idlePrinter.querySelector('h4').textContent;
+        
+        const notification = document.createElement('div');
+        notification.className = 'printer-notification';
+        notification.innerHTML = `
+            <div class="notification-content">
+                <h4>${printerName} is available!</h4>
+                <p>Would you like to start a new print job?</p>
+                <div class="notification-actions">
+                    <button class="cyber-button primary-button start-print-btn">Start Print</button>
+                    <button class="cyber-button dismiss-btn">Dismiss</button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Add styles for the notification
+        const style = document.createElement('style');
+        style.textContent = `
+            .printer-notification {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: rgba(10, 10, 18, 0.95);
+                border: 1px solid #00ff8c;
+                border-radius: 8px;
+                padding: 1.5rem;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+                animation: slide-in 0.3s ease-out;
+                max-width: 350px;
+            }
+            
+            .notification-content h4 {
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+                color: #00ff8c;
+            }
+            
+            .notification-content p {
+                margin-bottom: 1rem;
+                color: #ffffff;
+            }
+            
+            .notification-actions {
+                display: flex;
+                gap: 0.5rem;
+            }
+            
+            @keyframes slide-in {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        
+        document.head.appendChild(style);
+        
+        // Add event listeners to buttons
+        const dismissBtn = notification.querySelector('.dismiss-btn');
+        const startPrintBtn = notification.querySelector('.start-print-btn');
+        
+        if (dismissBtn) {
+            dismissBtn.addEventListener('click', function() {
+                document.body.removeChild(notification);
+            });
+        }
+        
+        if (startPrintBtn) {
+            startPrintBtn.addEventListener('click', function() {
+                // Redirect to products page or show model uploader
+                window.location.href = 'pages/products.html';
+            });
+        }
+    });
+}
+
+// Featured Prints Gallery Functionality
+function initFeaturedPrintsGallery() {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const pageDots = document.querySelectorAll('.page-dot');
+    const prevBtn = document.querySelector('.gallery-nav.prev');
+    const nextBtn = document.querySelector('.gallery-nav.next');
+    
+    if (!galleryItems.length) return;
+    
+    let currentPage = 0;
+    const itemsPerPage = 4;
+    let filteredItems = [...galleryItems];
+    
+    // Filter items by category
+    function filterItems(category) {
+        if (category === 'all') {
+            filteredItems = [...galleryItems];
+        } else {
+            filteredItems = [...galleryItems].filter(item => 
+                item.getAttribute('data-category') === category
+            );
+        }
+        
+        // Reset pagination
+        currentPage = 0;
+        updatePagination();
+        showCurrentItems();
+    }
+    
+    // Show items for current page
+    function showCurrentItems() {
+        const startIndex = currentPage * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        
+        // Hide all items first
+        galleryItems.forEach(item => {
+            item.style.display = 'none';
+        });
+        
+        // Show only items for current page
+        filteredItems.slice(startIndex, endIndex).forEach(item => {
+            item.style.display = 'block';
+        });
+        
+        // Update page dots
+        updateActiveDot();
+    }
+    
+    // Update pagination dots
+    function updatePagination() {
+        const pageCount = Math.max(1, Math.ceil(filteredItems.length / itemsPerPage));
+        
+        // Hide all dots
+        pageDots.forEach((dot, index) => {
+            dot.style.display = index < pageCount ? 'block' : 'none';
+        });
+    }
+    
+    // Update active dot
+    function updateActiveDot() {
+        pageDots.forEach((dot, index) => {
+            if (index === currentPage) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    // Navigate to next page
+    function nextPage() {
+        const pageCount = Math.ceil(filteredItems.length / itemsPerPage);
+        if (currentPage < pageCount - 1) {
+            currentPage++;
+            showCurrentItems();
+        }
+    }
+    
+    // Navigate to previous page
+    function prevPage() {
+        if (currentPage > 0) {
+            currentPage--;
+            showCurrentItems();
+        }
+    }
+    
+    // Event listeners for category buttons
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Update active button
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter items
+            const category = this.getAttribute('data-category');
+            filterItems(category);
+        });
+    });
+    
+    // Event listeners for pagination dots
+    pageDots.forEach((dot, index) => {
+        dot.addEventListener('click', function() {
+            currentPage = index;
+            showCurrentItems();
+        });
+    });
+    
+    // Event listeners for navigation buttons
+    if (prevBtn) {
+        prevBtn.addEventListener('click', prevPage);
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextPage);
+    }
+    
+    // Add hover effect to gallery items
+    galleryItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            const glowEffect = document.createElement('div');
+            glowEffect.className = 'gallery-item-glow';
+            glowEffect.style.position = 'absolute';
+            glowEffect.style.top = '0';
+            glowEffect.style.left = '0';
+            glowEffect.style.right = '0';
+            glowEffect.style.bottom = '0';
+            glowEffect.style.boxShadow = 'inset 0 0 30px rgba(0, 255, 140, 0.3)';
+            glowEffect.style.pointerEvents = 'none';
+            glowEffect.style.opacity = '0';
+            glowEffect.style.transition = 'opacity 0.5s';
+            
+            this.style.position = 'relative';
+            this.appendChild(glowEffect);
+            
+            // Fade in glow effect
+            setTimeout(() => {
+                glowEffect.style.opacity = '1';
+            }, 10);
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            const glowEffect = this.querySelector('.gallery-item-glow');
+            if (glowEffect) {
+                glowEffect.style.opacity = '0';
+                setTimeout(() => {
+                    if (glowEffect.parentNode === this) {
+                        this.removeChild(glowEffect);
+                    }
+                }, 500);
+            }
+        });
+    });
+    
+    // Initialize gallery
+    updatePagination();
+    showCurrentItems();
+}
+
+// Initialize all components when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the printing status simulation
+    initPrintingStatusSimulation();
+    
+    // Initialize idle printer selection
+    initAvailablePrinterSelection();
+    
+    // Initialize featured prints gallery
+    initFeaturedPrintsGallery();
 }); 
