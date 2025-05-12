@@ -906,4 +906,47 @@ input[type="range"]:focus {
   0% { opacity: 1; }
   50% { opacity: 0.5; }
   100% { opacity: 1; }
+}
+
+/* Add these styles for the login/register navigation buttons */
+
+/* User action buttons in header */
+.user-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 1rem;
+}
+
+.login-button, .register-button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+.login-button {
+    background-color: rgba(0, 255, 140, 0.1);
+    border: 1px solid #00ff8c;
+    color: #00ff8c;
+}
+
+.login-button:hover {
+    background-color: rgba(0, 255, 140, 0.3);
+}
+
+.register-button {
+    background-color: rgba(30, 30, 45, 0.9);
+    border: 1px solid #00ff8c;
+}
+
+/* Responsive adjustments for the user actions */
+@media (max-width: 768px) {
+    .user-actions {
+        margin-left: 0;
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    nav ul {
+        flex-wrap: wrap;
+    }
 } 

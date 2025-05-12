@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Phantom Creators</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <meta name="description" content="Administrator login for Phantom Creators 3D printing management">
+</head>
+<body>
+    <header class="cyber-header">
+        <div class="logo">Phantom Creators</div>
+        <nav>
+            <ul>
+                <li><a href="../index.html" class="glow-button">Home</a></li>
+                <li><a href="../index.html#services" class="glow-button">Services</a></li>
+                <li><a href="products.html" class="glow-button">Products</a></li>
+                <li><a href="../index.html#visualizer" class="glow-button">Visualizer</a></li>
+                <li><a href="../index.html#contact" class="glow-button">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="login-container">
+        <div class="cyber-card login-card admin-login">
+            <h2>Admin <span class="highlight warning">Login</span></h2>
+            
+            <div id="login-error" class="error-message" aria-live="polite"></div>
+            
+            <form id="admin-login-form" class="cyber-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="auth-code">Authentication Code</label>
+                    <input type="text" id="auth-code" name="auth-code" required>
+                    <small class="field-hint">Enter the code from your authenticator app</small>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="cyber-button primary-button">Authenticate</button>
+                    <a href="login.html" class="cyber-button">Customer Login</a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="login-features admin-features">
+            <h3>Admin <span class="highlight warning">Dashboard</span></h3>
+            <ul class="feature-list">
+                <li>Manage all customer orders</li>
+                <li>Track inventory and materials</li>
+                <li>Process payments and invoices</li>
+                <li>Review uploaded 3D models</li>
+                <li>Access system analytics and reports</li>
+                <li>Configure pricing and discounts</li>
+            </ul>
+            <div class="security-notice">
+                <p>This area is restricted to authorized personnel only. All login attempts are monitored and logged.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Phantom Creators. All rights reserved.</p>
+    </footer>
+
+    <script src="../js/admin-login.js"></script>
+    <script src="../js/cart.js"></script>
+</body>
+</html> 

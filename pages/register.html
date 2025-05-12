@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Phantom Creators</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <meta name="description" content="Create your Phantom Creators account for 3D printing services">
+</head>
+<body>
+    <header class="cyber-header">
+        <div class="logo">Phantom Creators</div>
+        <nav>
+            <ul>
+                <li><a href="../index.html" class="glow-button">Home</a></li>
+                <li><a href="../index.html#services" class="glow-button">Services</a></li>
+                <li><a href="products.html" class="glow-button">Products</a></li>
+                <li><a href="../index.html#visualizer" class="glow-button">Visualizer</a></li>
+                <li><a href="../index.html#contact" class="glow-button">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="login-container">
+        <div class="cyber-card register-card">
+            <h2>Create <span class="highlight">Account</span></h2>
+            
+            <div id="register-error" class="error-message" aria-live="polite"></div>
+            
+            <form id="register-form" class="cyber-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last-name" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required autocomplete="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number (optional)</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                        <small class="password-requirements">Minimum 8 characters, including letters and numbers</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the <a href="terms.html" class="cyber-link">Terms of Service</a> and <a href="privacy.html" class="cyber-link">Privacy Policy</a></label>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="newsletter" name="newsletter">
+                    <label for="newsletter">Send me updates about new features, promotions, and discounts</label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="cyber-button primary-button">Create Account</button>
+                    <a href="login.html" class="cyber-button">Already Have Account</a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="login-features">
+            <h3>Join <span class="highlight">Phantom Creators</span></h3>
+            <ul class="feature-list">
+                <li>Get competitive pricing on custom 3D printing</li>
+                <li>Fast turnaround and shipping on all orders</li>
+                <li>Access to exclusive materials and finishes</li>
+                <li>Free model optimization and consultation</li>
+                <li>Create and save multiple shipping addresses</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Phantom Creators. All rights reserved.</p>
+    </footer>
+
+    <script src="../js/register.js"></script>
+    <script src="../js/cart.js"></script>
+</body>
+</html> 

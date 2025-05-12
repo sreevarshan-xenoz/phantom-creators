@@ -31,8 +31,13 @@
             <ul>
                 <li><a href="#" class="glow-button">Home</a></li>
                 <li><a href="#services" class="glow-button">Services</a></li>
+                <li><a href="pages/products.html" class="glow-button">Products</a></li>
                 <li><a href="#visualizer" class="glow-button">Visualizer</a></li>
                 <li><a href="#contact" class="glow-button">Contact</a></li>
+                <li class="user-actions">
+                    <a href="pages/login.html" class="glow-button login-button">Login</a>
+                    <a href="pages/register.html" class="glow-button register-button">Register</a>
+                </li>
             </ul>
         </nav>
     </header>
@@ -66,7 +71,7 @@
             <h2>3D <span class="highlight">Visualizer</span></h2>
             
             <!-- Loading Indicator -->
-            <div id="loading-container" class="loading-container hidden" aria-live="polite" aria-busy="true">
+            <div id="loading-container" class="loading-container hidden" aria-live="polite" aria-busy="true" style="display: none !important; opacity: 0 !important; visibility: hidden !important;">
                 <div class="cyber-loading">
                     <div class="loading-spinner"></div>
                     <p id="loading-status">Processing...</p>
@@ -204,10 +209,65 @@
     <script src="./js/docs.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/demo.js"></script>
+    <script src="./js/cart.js"></script>
+    
+    <!-- Force initialization of the visualizer -->
+    <script>
+        // Ensure THREE.js is loaded or load it
+        if (!window.THREE) {
+            console.warn("THREE.js not detected, loading fallback");
+            const threeScript = document.createElement('script');
+            threeScript.src = "https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js";
+            threeScript.onload = function() {
+                const loaderScript = document.createElement('script');
+                loaderScript.src = "https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/STLLoader.js";
+                document.head.appendChild(loaderScript);
+            };
+            document.head.appendChild(threeScript);
+        }
+        
+        // Initialize visualizer as soon as possible
+        window.addEventListener('load', function() {
+            // Force loading to be hidden
+            const loadingContainer = document.getElementById('loading-container');
+            if (loadingContainer) {
+                loadingContainer.classList.add('hidden');
+                loadingContainer.style.display = 'none';
+            }
+            
+            // Direct initialization of visualizer if not already initialized
+            if (!window.materialVisualizer) {
+                const modelContainer = document.getElementById('3d-visualizer');
+                if (modelContainer) {
+                    try {
+                        console.log("Directly initializing visualizer");
+                        const visualizer = new OptimizedMaterialVisualizer(modelContainer);
+                        window.materialVisualizer = visualizer;
+                        
+                        // Update terminal
+                        const terminal = document.getElementById('terminal-output');
+                        if (terminal) {
+                            terminal.innerHTML = '> System ready. Visualizer initialized.<br>> Upload a model or try the demo.';
+                        }
+                    } catch (e) {
+                        console.error("Error initializing visualizer:", e);
+                    }
+                }
+            }
+        });
+    </script>
     
     <!-- Initialize the application -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Immediately hide the loading container
+            var loadingContainer = document.getElementById('loading-container');
+            if (loadingContainer) {
+                loadingContainer.classList.add('hidden');
+                // Also set display none to ensure it's hidden
+                loadingContainer.style.display = 'none';
+            }
+            
             // Create global fallback if structure doesn't exist
             if (!window.PhantomCreators) {
                 console.warn('PhantomCreators global object not found, creating fallback');
@@ -238,11 +298,12 @@
                 terminal.textContent = '> Ready to analyze models. Try the demo mode or upload an STL file.';
             }
             
-            // Hide loading spinner that might be stuck
+            // Additional backup to ensure loading is hidden
             setTimeout(function() {
                 var loadingContainer = document.getElementById('loading-container');
                 if (loadingContainer) {
                     loadingContainer.classList.add('hidden');
+                    loadingContainer.style.display = 'none';
                 }
                 
                 // If demo mode exists, make sure it's initialized

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Login - Phantom Creators</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <meta name="description" content="Login to your Phantom Creators account to manage your 3D printing orders">
+</head>
+<body>
+    <header class="cyber-header">
+        <div class="logo">Phantom Creators</div>
+        <nav>
+            <ul>
+                <li><a href="../index.html" class="glow-button">Home</a></li>
+                <li><a href="../index.html#services" class="glow-button">Services</a></li>
+                <li><a href="products.html" class="glow-button">Products</a></li>
+                <li><a href="../index.html#visualizer" class="glow-button">Visualizer</a></li>
+                <li><a href="../index.html#contact" class="glow-button">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="login-container">
+        <div class="cyber-card login-card">
+            <h2>Customer <span class="highlight">Login</span></h2>
+            
+            <div id="login-error" class="error-message" aria-live="polite"></div>
+            
+            <form id="login-form" class="cyber-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="cyber-button primary-button">Login</button>
+                    <a href="register.html" class="cyber-button">Create Account</a>
+                </div>
+                <div class="login-options">
+                    <a href="forgot-password.html" class="cyber-link">Forgot Password?</a>
+                    <a href="admin-login.html" class="cyber-link">Admin Login</a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="login-features">
+            <h3>Customer <span class="highlight">Features</span></h3>
+            <ul class="feature-list">
+                <li>Track your 3D printing orders</li>
+                <li>View order history and reorder</li>
+                <li>Upload custom models for printing</li>
+                <li>Save favorite materials and settings</li>
+                <li>Get exclusive discounts and updates</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Phantom Creators. All rights reserved.</p>
+    </footer>
+
+    <script src="../js/login.js"></script>
+    <script src="../js/cart.js"></script>
+</body>
+</html> 

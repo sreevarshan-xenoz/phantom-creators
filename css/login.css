@@ -1,0 +1,337 @@
+/* Login and Registration Styles for Phantom Creators */
+
+/* Layout */
+.login-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+}
+
+@media (max-width: 900px) {
+    .login-container {
+        flex-direction: column;
+        margin: 2rem auto;
+    }
+}
+
+/* Card Styles */
+.login-card, .register-card {
+    background-color: rgba(18, 18, 28, 0.9);
+    border: 1px solid #00ff8c;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 255, 140, 0.2);
+    padding: 2rem;
+    flex: 1;
+    min-width: 320px;
+    max-width: 600px;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-card::before, .register-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #00ff8c, #53f, #00ff8c);
+    background-size: 200% 100%;
+    animation: gradient-flow 4s linear infinite;
+    z-index: 1;
+}
+
+.admin-login {
+    border-color: #ff3e3e;
+}
+
+.admin-login::before {
+    background: linear-gradient(90deg, #ff3e3e, #ff9b3e, #ff3e3e);
+    background-size: 200% 100%;
+    animation: gradient-flow 4s linear infinite;
+}
+
+@keyframes gradient-flow {
+    0% {
+        background-position: 0% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Form Styles */
+.cyber-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-row .form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+label {
+    font-size: 0.9rem;
+    color: #b3b3cc;
+    margin-bottom: 0.25rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] {
+    background-color: rgba(10, 10, 18, 0.8);
+    border: 1px solid #404060;
+    border-radius: 4px;
+    color: #fff;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus {
+    border-color: #00ff8c;
+    box-shadow: 0 0 8px rgba(0, 255, 140, 0.4);
+    outline: none;
+}
+
+.admin-login input:focus {
+    border-color: #ff3e3e;
+    box-shadow: 0 0 8px rgba(255, 62, 62, 0.4);
+}
+
+/* Checkbox styling */
+.checkbox-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(10, 10, 18, 0.8);
+    border: 1px solid #404060;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+    background-color: #00ff8c;
+    border-color: #00ff8c;
+}
+
+.checkbox-group input[type="checkbox"]:checked::before {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    color: #000;
+}
+
+.checkbox-group label {
+    margin: 0;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+/* Button Styles */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.cyber-button {
+    background-color: rgba(30, 30, 45, 0.9);
+    color: #fff;
+    border: 1px solid #404060;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.cyber-button:hover {
+    background-color: rgba(50, 50, 70, 0.9);
+    transform: translateY(-2px);
+}
+
+.primary-button {
+    background-color: rgba(0, 255, 140, 0.15);
+    border-color: #00ff8c;
+    color: #00ff8c;
+}
+
+.primary-button:hover {
+    background-color: rgba(0, 255, 140, 0.3);
+}
+
+.admin-login .primary-button {
+    background-color: rgba(255, 62, 62, 0.15);
+    border-color: #ff3e3e;
+    color: #ff3e3e;
+}
+
+.admin-login .primary-button:hover {
+    background-color: rgba(255, 62, 62, 0.3);
+}
+
+/* Login Options and Links */
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.cyber-link {
+    color: #00ff8c;
+    text-decoration: none;
+    position: relative;
+    font-size: 0.9rem;
+}
+
+.cyber-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: #00ff8c;
+    transition: width 0.3s ease;
+}
+
+.cyber-link:hover::after {
+    width: 100%;
+}
+
+/* Admin specific styles */
+.admin-features .cyber-link, 
+.admin-login .cyber-link {
+    color: #ff3e3e;
+}
+
+.admin-features .cyber-link::after, 
+.admin-login .cyber-link::after {
+    background-color: #ff3e3e;
+}
+
+/* Features Panel */
+.login-features {
+    background-color: rgba(18, 18, 28, 0.7);
+    border: 1px solid #404060;
+    border-radius: 5px;
+    padding: 2rem;
+    flex: 0 1 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.feature-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    color: #b3b3cc;
+    font-size: 0.95rem;
+}
+
+.feature-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #00ff8c;
+}
+
+.admin-features .feature-list li::before {
+    color: #ff3e3e;
+}
+
+.highlight {
+    color: #00ff8c;
+    font-weight: 500;
+}
+
+.highlight.warning {
+    color: #ff3e3e;
+}
+
+/* Additional Form Elements */
+.field-hint, 
+.password-requirements {
+    font-size: 0.8rem;
+    color: #8888aa;
+    margin-top: 0.25rem;
+}
+
+/* Error Message */
+.error-message {
+    background-color: rgba(255, 62, 62, 0.1);
+    border-left: 3px solid #ff3e3e;
+    color: #ff3e3e;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    display: none;
+}
+
+.error-message.visible {
+    display: block;
+}
+
+/* Security Notice */
+.security-notice {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: rgba(255, 62, 62, 0.05);
+    border-left: 3px solid #ff3e3e;
+}
+
+.security-notice p {
+    color: #b3b3cc;
+    font-size: 0.85rem;
+    margin: 0;
+} 
