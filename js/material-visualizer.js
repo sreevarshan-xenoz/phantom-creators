@@ -359,7 +359,14 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
     
     // Add LOD (Level of Detail) control
     this.lod = new THREE.LOD();
-    this.scene.add(this.lod);
+    
+    // Only add LOD to scene if scene exists
+    if (this.scene) {
+      this.scene.add(this.lod);
+    } else {
+      // If scene doesn't exist yet, we'll add LOD in init or when loading a model
+      console.warn('Scene not available in constructor, LOD will be added later');
+    }
     
     // Add adaptive quality based on container size
     this.qualityLevels = [
@@ -378,51 +385,81 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
       value: 0
     };
     
-    // Enhanced environment mapping for reflections
-    this.enableEnvironmentMap();
+    // Initialize this.modelMesh if not set
+    if (!this.modelMesh) {
+      this.modelMesh = null;
+    }
+    
+    // Try to enable environment mapping, but handle any errors
+    try {
+      this.enableEnvironmentMap();
+    } catch (error) {
+      console.warn('Failed to initialize environment map:', error);
+    }
   }
   
   /**
    * Enable environment mapping for more realistic reflections
    */
   enableEnvironmentMap() {
-    // Create a simple environment cubemap
-    const path = 'https://threejs.org/examples/textures/cube/pisa/';
-    const format = '.png';
-    const urls = [
-      path + 'px' + format, path + 'nx' + format,
-      path + 'py' + format, path + 'ny' + format,
-      path + 'pz' + format, path + 'nz' + format
-    ];
+    if (!this.scene) {
+      console.warn('Cannot enable environment map: scene not available');
+      return;
+    }
     
-    // Create fallback environment map using simplified textures
-    const fallbackEnvMap = new THREE.CubeTextureLoader().load([
-      // Simplified cube map for low resources
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
-    ]);
-    
+    // Create a simple environment cubemap with built-in fallbacks
     try {
-      const envMap = new THREE.CubeTextureLoader().load(
-        urls,
-        () => {
-          // Success - apply to scene
-          this.scene.environment = envMap;
-        },
-        undefined,
-        () => {
-          // Error - use fallback
-          console.warn('Error loading environment map, using fallback');
-          this.scene.environment = fallbackEnvMap;
-        }
-      );
-    } catch (e) {
-      console.warn('Environment mapping not supported, falling back to basic lighting');
+      // First try loading external textures
+      const path = 'https://threejs.org/examples/textures/cube/pisa/';
+      const format = '.png';
+      const urls = [
+        path + 'px' + format, path + 'nx' + format,
+        path + 'py' + format, path + 'ny' + format,
+        path + 'pz' + format, path + 'nz' + format
+      ];
+      
+      // Create fallback environment map using simplified textures (1x1 pixel textures)
+      const fallbackEnvMap = new THREE.CubeTextureLoader().load([
+        // Simplified cube map for low resources - 1x1 pixel transparent PNGs
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
+      ]);
+      
+      // Set up fallback in case external loading fails
       this.scene.environment = fallbackEnvMap;
+      
+      // Now try loading the better environment map
+      try {
+        new THREE.CubeTextureLoader().load(
+          urls,
+          (envMap) => {
+            // Success - apply to scene
+            if (this.scene) {
+              this.scene.environment = envMap;
+            }
+          },
+          undefined, // Progress callback not needed
+          (error) => {
+            // Error - we already have fallback set
+            console.warn('Could not load environment map:', error);
+          }
+        );
+      } catch (loadError) {
+        // Already using fallback, just log the error
+        console.warn('Error loading environment textures:', loadError);
+      }
+    } catch (fallbackError) {
+      // If even the fallback fails, just disable environment mapping
+      console.warn('Environment mapping completely disabled due to errors:', fallbackError);
+      
+      // Set a null environment to avoid future errors
+      if (this.scene) {
+        this.scene.environment = null;
+      }
     }
   }
   
@@ -520,6 +557,11 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
    * @param {THREE.BufferGeometry} geometry - Original geometry
    */
   createLODLevels(geometry) {
+    if (!geometry || !geometry.attributes || !geometry.attributes.position) {
+      console.error('Invalid geometry provided to createLODLevels');
+      throw new Error('Invalid geometry');
+    }
+    
     // Get original vertex count
     const originalCount = geometry.attributes.position.count;
     
@@ -527,11 +569,22 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
     const material = this.createMaterial();
     
     // Add highest quality level (original geometry)
-    const highMesh = new THREE.Mesh(geometry, material.clone());
-    highMesh.name = 'lod-high';
-    highMesh.castShadow = true;
-    highMesh.receiveShadow = true;
-    this.lod.addLevel(highMesh, 0); // Visible when camera is closest
+    try {
+      const highMesh = new THREE.Mesh(geometry, material.clone());
+      highMesh.name = 'lod-high';
+      highMesh.castShadow = true;
+      highMesh.receiveShadow = true;
+      
+      // Make sure the lod object exists
+      if (!this.lod) {
+        this.lod = new THREE.LOD();
+      }
+      
+      this.lod.addLevel(highMesh, 0); // Visible when camera is closest
+    } catch (e) {
+      console.error('Failed to create high LOD level:', e);
+      throw e; // Re-throw to trigger fallback
+    }
     
     // Create medium quality version (simplified)
     try {
@@ -543,6 +596,7 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
       this.lod.addLevel(medMesh, 25); // Visible at medium distance
     } catch (e) {
       console.warn('Could not create medium LOD level:', e);
+      // Continue without medium LOD
     }
     
     // Create low quality version (highly simplified)
@@ -552,9 +606,10 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
       lowMesh.name = 'lod-low';
       lowMesh.castShadow = false;
       lowMesh.receiveShadow = true;
-      this.lod.addLevel(lowMesh, 60); // Visible at far distance
+      this.lod.addLevel(lowMesh, 50); // Visible at far distance
     } catch (e) {
       console.warn('Could not create low LOD level:', e);
+      // Continue without low LOD
     }
   }
   
@@ -565,49 +620,82 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
    * @returns {THREE.BufferGeometry} - Simplified geometry
    */
   simplifyGeometry(geometry, ratio) {
-    // This is a mock implementation - in a real app you would use:
-    // - THREE.SimplifyModifier
-    // - meshopt.js
-    // - simplify-3d-mesh
+    // Add error handling and validation
+    if (!geometry || !geometry.attributes || !geometry.attributes.position) {
+      console.error('Invalid geometry provided to simplifyGeometry');
+      return new THREE.BufferGeometry(); // Return empty geometry as fallback
+    }
     
-    // For demonstration, we'll create a simplified version by skipping vertices
-    const positions = geometry.attributes.position.array;
-    const normals = geometry.attributes.normal ? geometry.attributes.normal.array : null;
+    // Validate ratio
+    if (ratio <= 0 || ratio > 1) {
+      console.warn('Invalid simplification ratio, using 0.5');
+      ratio = 0.5;
+    }
     
-    const stride = Math.max(1, Math.floor(1 / ratio));
-    const newPositions = [];
-    const newNormals = normals ? [] : null;
-    
-    for (let i = 0; i < positions.length; i += 9 * stride) {
-      // Keep every Nth triangle
-      if (i + 8 < positions.length) {
-        // Add positions
-        for (let j = 0; j < 9; j++) {
-          newPositions.push(positions[i + j]);
-        }
-        
-        // Add normals if available
-        if (normals && i + 8 < normals.length) {
+    try {
+      // This is a mock implementation - in a real app you would use:
+      // - THREE.SimplifyModifier
+      // - meshopt.js
+      // - simplify-3d-mesh
+      
+      // For demonstration, we'll create a simplified version by skipping vertices
+      const positions = geometry.attributes.position.array;
+      const normals = geometry.attributes.normal ? geometry.attributes.normal.array : null;
+      
+      // Ensure we have positions
+      if (!positions || positions.length === 0) {
+        console.error('Geometry has no position data');
+        return geometry.clone(); // Return original as fallback
+      }
+      
+      const stride = Math.max(1, Math.floor(1 / ratio));
+      const newPositions = [];
+      const newNormals = normals ? [] : null;
+      
+      // Protect against out-of-bounds access
+      const maxIndex = positions.length - 9;
+      
+      for (let i = 0; i < positions.length; i += 9 * stride) {
+        // Keep every Nth triangle and ensure we don't exceed array bounds
+        if (i <= maxIndex) {
+          // Add positions
           for (let j = 0; j < 9; j++) {
-            newNormals.push(normals[i + j]);
+            newPositions.push(positions[i + j]);
+          }
+          
+          // Add normals if available
+          if (newNormals && normals && i + 8 < normals.length) {
+            for (let j = 0; j < 9; j++) {
+              newNormals.push(normals[i + j]);
+            }
           }
         }
       }
+      
+      // Ensure we have at least some vertices
+      if (newPositions.length < 9) {
+        console.warn('Too few vertices after simplification, returning original');
+        return geometry.clone();
+      }
+      
+      // Create new geometry
+      const newGeometry = new THREE.BufferGeometry();
+      
+      // Add attributes
+      newGeometry.setAttribute('position', new THREE.Float32BufferAttribute(newPositions, 3));
+      
+      if (newNormals && newNormals.length > 0) {
+        newGeometry.setAttribute('normal', new THREE.Float32BufferAttribute(newNormals, 3));
+      } else {
+        newGeometry.computeVertexNormals();
+      }
+      
+      return newGeometry;
+    } catch (error) {
+      console.error('Error during geometry simplification:', error);
+      // In case of any error, return original geometry
+      return geometry.clone();
     }
-    
-    // Create new geometry
-    const newGeometry = new THREE.BufferGeometry();
-    
-    // Add attributes
-    newGeometry.setAttribute('position', new THREE.Float32BufferAttribute(newPositions, 3));
-    
-    if (newNormals) {
-      newGeometry.setAttribute('normal', new THREE.Float32BufferAttribute(newNormals, 3));
-    } else {
-      newGeometry.computeVertexNormals();
-    }
-    
-    return newGeometry;
   }
   
   /**
@@ -615,6 +703,15 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
    */
   animate(timestamp) {
     if (!this.scene || !this.camera || !this.renderer) return;
+    
+    // Make sure fpsCounter exists before using it
+    if (!this.fpsCounter) {
+      this.fpsCounter = {
+        frames: 0,
+        lastTime: performance.now(),
+        value: 0
+      };
+    }
     
     // Calculate FPS
     this.fpsCounter.frames++;
@@ -630,40 +727,68 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
     
     // Adaptive quality based on viewport size
     const width = this.container.clientWidth;
+    
+    // Check if qualityLevels exists before using it
+    if (!this.qualityLevels) {
+      this.qualityLevels = [
+        { threshold: 0, detail: 1, maxPolyCount: 100000 },
+        { threshold: 500, detail: 0.5, maxPolyCount: 50000 },
+        { threshold: 1000, detail: 0.25, maxPolyCount: 25000 }
+      ];
+    }
+    
+    // Safe access to qualityLevels
     const detailLevel = this.qualityLevels.find(level => width > level.threshold)?.detail || 1;
+    
+    // Set currentDetailLevel if not defined
+    if (this.currentDetailLevel === undefined) {
+      this.currentDetailLevel = detailLevel;
+    }
+    
+    // Check if lod exists before using it
+    if (!this.lod) {
+      this.lod = new THREE.LOD();
+      this.scene.add(this.lod);
+    }
     
     // Update materials with detail level
     if (this.modelMesh && Math.abs(this.currentDetailLevel - detailLevel) > 0.05) {
       this.currentDetailLevel = detailLevel;
       
-      // Update material properties for all LOD levels
-      this.lod.traverse(child => {
-        if (child.isMesh && child.material) {
-          // Adjust material quality
-          child.material.roughness = Math.max(0.1, Math.min(1, 1 - detailLevel * 0.7));
-          
-          // Adjust displacement scale if using displacement mapping
-          if (child.material.displacementScale !== undefined) {
-            child.material.displacementScale = detailLevel;
+      // Update material properties for all LOD levels if lod exists
+      if (this.lod) {
+        this.lod.traverse(child => {
+          if (child.isMesh && child.material) {
+            // Adjust material quality
+            child.material.roughness = Math.max(0.1, Math.min(1, 1 - detailLevel * 0.7));
+            
+            // Adjust displacement scale if using displacement mapping
+            if (child.material.displacementScale !== undefined) {
+              child.material.displacementScale = detailLevel;
+            }
+            
+            // Toggle expensive material features
+            if (detailLevel < 0.5) {
+              child.material.envMapIntensity = 0.2;
+              child.receiveShadow = false;
+              child.castShadow = false;
+            } else {
+              child.material.envMapIntensity = 1.0;
+              child.receiveShadow = true;
+              child.castShadow = detailLevel > 0.8;
+            }
           }
-          
-          // Toggle expensive material features
-          if (detailLevel < 0.5) {
-            child.material.envMapIntensity = 0.2;
-            child.receiveShadow = false;
-            child.castShadow = false;
-          } else {
-            child.material.envMapIntensity = 1.0;
-            child.receiveShadow = true;
-            child.castShadow = detailLevel > 0.8;
-          }
-        }
-      });
+        });
+      }
     }
     
     // Auto-rotate model
-    if (this.config.autoRotate && this.lod) {
-      this.lod.rotation.y += this.config.rotationSpeed;
+    if (this.config.autoRotate) {
+      if (this.lod) {
+        this.lod.rotation.y += this.config.rotationSpeed;
+      } else if (this.modelMesh) {
+        this.modelMesh.rotation.y += this.config.rotationSpeed;
+      }
     }
     
     // Update controls if available
@@ -683,26 +808,37 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
   adaptQualityToPerformance() {
     if (!this.renderer) return;
     
+    // Make sure fpsCounter exists
+    if (!this.fpsCounter) return;
+    
     if (this.fpsCounter.value < 30) {
       // Low FPS - reduce quality
       this.renderer.setPixelRatio(Math.max(1, window.devicePixelRatio - 0.5));
       
-      // Use simpler materials
-      this.lod.traverse(child => {
-        if (child.isMesh && child.material) {
-          child.material.flatShading = true;
-        }
-      });
+      // Use simpler materials if lod exists
+      if (this.lod) {
+        this.lod.traverse(child => {
+          if (child.isMesh && child.material) {
+            child.material.flatShading = true;
+          }
+        });
+      } else if (this.modelMesh && this.modelMesh.material) {
+        this.modelMesh.material.flatShading = true;
+      }
     } else if (this.fpsCounter.value > 55) {
       // High FPS - can increase quality
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       
-      // Use better materials
-      this.lod.traverse(child => {
-        if (child.isMesh && child.material) {
-          child.material.flatShading = false;
-        }
-      });
+      // Use better materials if lod exists
+      if (this.lod) {
+        this.lod.traverse(child => {
+          if (child.isMesh && child.material) {
+            child.material.flatShading = false;
+          }
+        });
+      } else if (this.modelMesh && this.modelMesh.material) {
+        this.modelMesh.material.flatShading = false;
+      }
     }
   }
   
@@ -719,33 +855,60 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
     const reader = new FileReader();
     
     reader.onload = (event) => {
-      const buffer = event.target.result;
-      
-      const loader = new THREE.STLLoader();
-      const geometry = loader.parse(buffer);
-      
-      // Clear existing model and LOD
-      if (this.modelMesh) {
-        this.scene.remove(this.modelMesh);
-        this.modelMesh = null;
+      try {
+        const buffer = event.target.result;
+        
+        const loader = new THREE.STLLoader();
+        const geometry = loader.parse(buffer);
+        
+        // Clear existing model and LOD
+        if (this.modelMesh) {
+          this.scene.remove(this.modelMesh);
+          this.modelMesh = null;
+        }
+        
+        // Initialize lod if it doesn't exist
+        if (!this.lod) {
+          this.lod = new THREE.LOD();
+        } else {
+          this.lod.clear();
+        }
+        
+        // Center geometry
+        geometry.center();
+        
+        // Create LOD levels (with error handling)
+        try {
+          this.createLODLevels(geometry);
+        } catch (err) {
+          console.warn('Could not create LOD levels, falling back to simple model', err);
+          // Create simple model as fallback
+          const material = this.createMaterial();
+          this.modelMesh = new THREE.Mesh(geometry, material);
+          this.modelMesh.name = 'model-fallback';
+          this.scene.add(this.modelMesh);
+          return;
+        }
+        
+        // Set main model reference to highest LOD for compatibility
+        this.modelMesh = this.lod.getObjectByName('lod-high');
+        
+        // Scale model to fit view
+        this.fitModelToView(geometry);
+        
+        // Add LOD to scene
+        this.scene.add(this.lod);
+      } catch (error) {
+        console.error('Error processing model file:', error);
+        // Display error message to user
+        const terminalOutput = document.getElementById('terminal-output');
+        if (terminalOutput) {
+          const errorLine = document.createElement('div');
+          errorLine.className = 'terminal-line error';
+          errorLine.textContent = `> ERROR: Failed to load model: ${error.message}`;
+          terminalOutput.appendChild(errorLine);
+        }
       }
-      
-      this.lod.clear();
-      
-      // Center geometry
-      geometry.center();
-      
-      // Create multiple LOD levels
-      this.createLODLevels(geometry);
-      
-      // Set main model reference to highest LOD for compatibility
-      this.modelMesh = this.lod.getObjectByName('lod-high');
-      
-      // Scale model to fit view
-      this.fitModelToView(geometry);
-      
-      // Add LOD to scene
-      this.scene.add(this.lod);
     };
     
     reader.onerror = (error) => {
