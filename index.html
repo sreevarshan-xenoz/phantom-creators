@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phantom Creators - 3D Printing Portal</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <meta name="description" content="Advanced 3D printing simulation and visualization platform">
+</head>
+<body>
+    <header class="cyber-header">
+        <div class="logo">Phantom Creators</div>
+        <nav>
+            <ul>
+                <li><a href="#" class="glow-button">Home</a></li>
+                <li><a href="#services" class="glow-button">Services</a></li>
+                <li><a href="#visualizer" class="glow-button">Visualizer</a></li>
+                <li><a href="#contact" class="glow-button">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <h1>Next-Gen 3D Printing <span class="highlight">Simulation</span></h1>
+            <p>Visualize, analyze, and optimize your 3D models before printing</p>
+            <div id="filament-stream" aria-label="Animated filament flow visualization" aria-hidden="true"></div>
+        </section>
+
+        <section id="services">
+            <h2>Our <span class="highlight">Services</span></h2>
+            <div class="service-grid">
+                <div class="service-card" role="region" aria-labelledby="service-title-1">
+                    <h3 id="service-title-1">Complexity Analysis</h3>
+                    <p>Advanced algorithm to determine optimal print settings</p>
+                </div>
+                <div class="service-card" role="region" aria-labelledby="service-title-2">
+                    <h3 id="service-title-2">Material Simulation</h3>
+                    <p>Visualize different materials before printing</p>
+                </div>
+                <div class="service-card" role="region" aria-labelledby="service-title-3">
+                    <h3 id="service-title-3">Performance Prediction</h3>
+                    <p>Estimate print time and resource usage</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="visualizer">
+            <h2>3D <span class="highlight">Visualizer</span></h2>
+            
+            <!-- Loading Indicator -->
+            <div id="loading-container" class="loading-container hidden" aria-live="polite" aria-busy="true">
+                <div class="cyber-loading">
+                    <div class="loading-spinner"></div>
+                    <p id="loading-status">Processing...</p>
+                    <div class="loading-progress">
+                        <div id="loading-bar" class="loading-bar-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="visualizer-container">
+                <div id="3d-visualizer" class="model-container"></div>
+                <div class="cyber-terminal" role="status" aria-live="polite">
+                    <div class="terminal-content" id="terminal-output" aria-label="Order status updates"></div>
+                </div>
+            </div>
+            
+            <!-- Material Selection UI -->
+            <div id="material-controls" class="control-panel">
+                <h3>Material Selection</h3>
+                <div class="material-options">
+                    <div class="material-option">
+                        <input type="radio" id="material-pla" name="material" value="pla" checked>
+                        <label for="material-pla" class="material-label">PLA</label>
+                    </div>
+                    <div class="material-option">
+                        <input type="radio" id="material-abs" name="material" value="abs">
+                        <label for="material-abs" class="material-label">ABS</label>
+                    </div>
+                    <div class="material-option">
+                        <input type="radio" id="material-petg" name="material" value="petg">
+                        <label for="material-petg" class="material-label">PETG</label>
+                    </div>
+                    <div class="material-option">
+                        <input type="radio" id="material-tpu" name="material" value="tpu">
+                        <label for="material-tpu" class="material-label">TPU</label>
+                    </div>
+                </div>
+                
+                <h3>Material Properties</h3>
+                <div class="property-sliders">
+                    <div class="property-slider">
+                        <label for="material-opacity">Opacity</label>
+                        <input type="range" id="material-opacity" min="0" max="1" step="0.01" value="0.8">
+                    </div>
+                    <div class="property-slider">
+                        <label for="material-metalness">Metalness</label>
+                        <input type="range" id="material-metalness" min="0" max="1" step="0.01" value="0.2">
+                    </div>
+                    <div class="property-slider">
+                        <label for="material-roughness">Roughness</label>
+                        <input type="range" id="material-roughness" min="0" max="1" step="0.01" value="0.5">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Print Control Panel -->
+            <div id="print-controls" class="control-panel">
+                <button id="analyze-btn" class="cyber-button">Analyze Model</button>
+                <button id="start-print-btn" class="cyber-button">Start Print</button>
+                <button id="pause-print-btn" class="cyber-button" disabled>Pause</button>
+                <button id="resume-print-btn" class="cyber-button" disabled>Resume</button>
+                <button id="cancel-print-btn" class="cyber-button" disabled>Cancel</button>
+            </div>
+            
+            <div class="upload-container">
+                <label for="model-upload" class="glow-button">Upload STL File</label>
+                <input type="file" id="model-upload" accept=".stl" aria-label="Upload 3D model file">
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact <span class="highlight">Us</span></h2>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" required></textarea>
+                </div>
+                <button type="submit" class="glow-button">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Phantom Creators. All rights reserved.</p>
+    </footer>
+
+    <!-- Hidden Documentation Panel -->
+    <div id="cyber-docs" class="hidden">
+        <div class="docs-header">
+            <h3>Documentation</h3>
+            <button class="close-docs">×</button>
+        </div>
+        <div id="docs-content"></div>
+    </div>
+    
+    <!-- Performance Stats Panel -->
+    <div id="performance-stats" class="performance-monitor hidden">
+        <div class="stats-header">
+            <h4>Performance Metrics</h4>
+            <button class="close-stats">×</button>
+        </div>
+        <div id="stats-content">
+            <div class="stat-row">
+                <span>FPS:</span>
+                <span id="stat-fps">0</span>
+            </div>
+            <div class="stat-row">
+                <span>Memory:</span>
+                <span id="stat-memory">0 MB</span>
+            </div>
+            <div class="stat-row">
+                <span>Render Time:</span>
+                <span id="stat-render">0 ms</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/STLLoader.js"></script>
+    <script src="./js/filament-stream.js"></script>
+    <script src="./js/complexity-analyzer.js"></script>
+    <script src="./js/material-visualizer.js"></script>
+    <script src="./js/print-state-manager.js"></script>
+    <script src="./js/docs.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+</html> 

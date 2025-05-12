@@ -1,0 +1,52 @@
+{
+  "name": "phantom-creators",
+  "version": "1.0.0",
+  "description": "Advanced 3D printing simulation and visualization platform",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint js/",
+    "start": "http-server -p 8080 -c-1"
+  },
+  "keywords": [
+    "3d-printing",
+    "simulation",
+    "visualization",
+    "web",
+    "cyberpunk"
+  ],
+  "author": "Phantom Creators Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@testing-library/dom": "^9.3.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "babel-jest": "^29.5.0",
+    "eslint": "^8.43.0",
+    "eslint-plugin-jest": "^27.2.2",
+    "http-server": "^14.1.1",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0"
+  },
+  "dependencies": {
+    "three": "^0.153.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+      "\\.(css|less|scss)$": "<rootDir>/tests/mocks/styleMock.js"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "collectCoverageFrom": [
+      "js/**/*.js"
+    ]
+  }
+} 
