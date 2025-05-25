@@ -903,6 +903,88 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
     // Run base disposal
     super.dispose();
   }
+  
+  /**
+   * Enhanced model loading from File object with LOD support
+   * @param {File} file - STL file object
+   */
+  loadModelFromFile(file) {
+    if (!window.THREE || !window.THREE.STLLoader) {
+      console.error('Three.js STLLoader is not available');
+      return;
+    }
+    
+    const reader = new FileReader();
+    
+    reader.onload = (event) => {
+      try {
+        const buffer = event.target.result;
+        
+        const loader = new THREE.STLLoader();
+        const geometry = loader.parse(buffer);
+        
+        // Clear existing model and LOD
+        if (this.modelMesh) {
+          this.scene.remove(this.modelMesh);
+          this.modelMesh = null;
+        }
+        
+        // Initialize lod if it doesn't exist
+        if (!this.lod) {
+          this.lod = new THREE.LOD();
+        } else {
+          this.lod.clear();
+        }
+        
+        // Center geometry
+        geometry.center();
+        
+        // Create LOD levels (with error handling)
+        try {
+          this.createLODLevels(geometry);
+        } catch (err) {
+          console.warn('Could not create LOD levels, falling back to simple model', err);
+          // Create simple model as fallback
+          const material = this.createMaterial();
+          this.modelMesh = new THREE.Mesh(geometry, material);
+          this.modelMesh.name = 'model-fallback';
+          this.scene.add(this.modelMesh);
+          
+          // Enable slice button
+          this.enableSliceButton();
+          return;
+        }
+        
+        // Set main model reference to highest LOD for compatibility
+        this.modelMesh = this.lod.getObjectByName('lod-high');
+        
+        // Scale model to fit view
+        this.fitModelToView(geometry);
+        
+        // Add LOD to scene
+        this.scene.add(this.lod);
+        
+        // Enable slice button
+        this.enableSliceButton();
+      } catch (error) {
+        console.error('Error processing model file:', error);
+        // Display error message to user
+        const terminalOutput = document.getElementById('terminal-output');
+        if (terminalOutput) {
+          const errorLine = document.createElement('div');
+          errorLine.className = 'terminal-line error';
+          errorLine.textContent = `> ERROR: Failed to load model: ${error.message}`;
+          terminalOutput.appendChild(errorLine);
+        }
+      }
+    };
+    
+    reader.onerror = (error) => {
+      console.error('Error reading file:', error);
+    };
+    
+    reader.readAsArrayBuffer(file);
+  }
 }
 
 // Initialize on document load
