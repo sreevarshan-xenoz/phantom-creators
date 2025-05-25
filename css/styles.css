@@ -1487,4 +1487,198 @@ input[type="range"]:focus {
         flex-direction: column;
         gap: 0.5rem;
     }
+}
+
+/* Slicer Controls */
+#slicer-controls {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(18, 18, 28, 0.8);
+    border: 1px solid #00ff8c;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 255, 140, 0.3);
+}
+
+.slicer-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.slicer-option {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.slicer-option label {
+    font-size: 0.9rem;
+    color: #00ff8c;
+    margin-bottom: 5px;
+}
+
+.cyber-select {
+    background-color: #12121c;
+    color: #ffffff;
+    border: 1px solid #00ff8c;
+    border-radius: 3px;
+    padding: 8px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cyber-select:hover {
+    box-shadow: 0 0 8px rgba(0, 255, 140, 0.5);
+}
+
+.cyber-select:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 255, 140, 0.7);
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #12121c;
+    border: 1px solid #00ff8c;
+    border-radius: 24px;
+    transition: .4s;
+}
+
+.toggle-label:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 3px;
+    background-color: #00ff8c;
+    border-radius: 50%;
+    transition: .4s;
+}
+
+.toggle-input:checked + .toggle-label {
+    background-color: rgba(0, 255, 140, 0.2);
+}
+
+.toggle-input:checked + .toggle-label:before {
+    transform: translateX(26px);
+}
+
+.slicer-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Slice Preview */
+#slice-preview {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(18, 18, 28, 0.8);
+    border: 1px solid #00ff8c;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 255, 140, 0.3);
+}
+
+.preview-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.layer-preview-container {
+    height: 300px;
+    background-color: #0a0a12;
+    border: 1px solid #00ff8c;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+}
+
+.layer-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+#layer-counter {
+    font-family: 'Courier New', monospace;
+    color: #00ff8c;
+    font-size: 0.9rem;
+    min-width: 120px;
+    text-align: center;
+}
+
+.slice-stats {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: rgba(10, 10, 18, 0.5);
+    border-radius: 3px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.stat-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: #00ff8c;
+    font-weight: bold;
+}
+
+/* Hidden class for toggling visibility */
+.hidden {
+    display: none !important;
+}
+
+/* Responsive adjustments for slicer */
+@media (max-width: 768px) {
+    .slicer-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .slicer-actions {
+        flex-direction: column;
+    }
+    
+    .slice-stats {
+        flex-direction: column;
+        align-items: center;
+    }
 } 

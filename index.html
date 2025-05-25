@@ -244,10 +244,118 @@
             <!-- Print Control Panel -->
             <div id="print-controls" class="control-panel">
                 <button id="analyze-btn" class="cyber-button">Analyze Model</button>
+                <button id="slice-btn" class="cyber-button">Slice Model</button>
                 <button id="start-print-btn" class="cyber-button">Start Print</button>
                 <button id="pause-print-btn" class="cyber-button" disabled>Pause</button>
                 <button id="resume-print-btn" class="cyber-button" disabled>Resume</button>
                 <button id="cancel-print-btn" class="cyber-button" disabled>Cancel</button>
+            </div>
+            
+            <!-- Slicer Control Panel (initially hidden) -->
+            <div id="slicer-controls" class="control-panel hidden">
+                <h3>Slicer Settings</h3>
+                <div class="slicer-options">
+                    <div class="slicer-option">
+                        <label for="layer-height">Layer Height (mm)</label>
+                        <select id="layer-height" class="cyber-select">
+                            <option value="0.1">0.1 mm (High Quality)</option>
+                            <option value="0.15">0.15 mm (Balanced)</option>
+                            <option value="0.2" selected>0.2 mm (Standard)</option>
+                            <option value="0.25">0.25 mm (Fast)</option>
+                            <option value="0.3">0.3 mm (Draft)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="slicer-option">
+                        <label for="infill-density">Infill Density (%)</label>
+                        <select id="infill-density" class="cyber-select">
+                            <option value="10">10% (Light)</option>
+                            <option value="20" selected>20% (Standard)</option>
+                            <option value="30">30% (Strong)</option>
+                            <option value="50">50% (Dense)</option>
+                            <option value="100">100% (Solid)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="slicer-option">
+                        <label for="infill-pattern">Infill Pattern</label>
+                        <select id="infill-pattern" class="cyber-select">
+                            <option value="grid" selected>Grid</option>
+                            <option value="triangles">Triangles</option>
+                            <option value="zigzag">Zigzag</option>
+                            <option value="concentric">Concentric</option>
+                            <option value="gyroid">Gyroid</option>
+                        </select>
+                    </div>
+                    
+                    <div class="slicer-option">
+                        <label for="print-speed">Print Speed (mm/s)</label>
+                        <select id="print-speed" class="cyber-select">
+                            <option value="30">30 mm/s (High Quality)</option>
+                            <option value="50" selected>50 mm/s (Standard)</option>
+                            <option value="80">80 mm/s (Fast)</option>
+                            <option value="100">100 mm/s (Draft)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="slicer-option">
+                        <label for="support-type">Support Type</label>
+                        <select id="support-type" class="cyber-select">
+                            <option value="none" selected>None</option>
+                            <option value="touching-buildplate">Touching Buildplate</option>
+                            <option value="everywhere">Everywhere</option>
+                        </select>
+                    </div>
+                    
+                    <div class="slicer-option">
+                        <label for="raft">Raft</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="raft" class="toggle-input">
+                            <label for="raft" class="toggle-label"></label>
+                        </div>
+                    </div>
+                    
+                    <div class="slicer-option">
+                        <label for="brim">Brim</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="brim" class="toggle-input">
+                            <label for="brim" class="toggle-label"></label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slicer-actions">
+                    <button id="preview-slice-btn" class="cyber-button">Preview Slice</button>
+                    <button id="generate-gcode-btn" class="cyber-button">Generate G-Code</button>
+                    <button id="close-slicer-btn" class="cyber-button">Close</button>
+                </div>
+            </div>
+            
+            <!-- Slice Preview Panel (initially hidden) -->
+            <div id="slice-preview" class="control-panel hidden">
+                <h3>Slice Preview</h3>
+                <div class="preview-container">
+                    <div id="layer-preview" class="layer-preview-container"></div>
+                    <div class="layer-controls">
+                        <button id="prev-layer-btn" class="cyber-button" disabled>Previous Layer</button>
+                        <span id="layer-counter">Layer: 0 / 0</span>
+                        <button id="next-layer-btn" class="cyber-button" disabled>Next Layer</button>
+                    </div>
+                    <div class="slice-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Estimated Time:</span>
+                            <span id="estimated-time" class="stat-value">0h 0m</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Material Used:</span>
+                            <span id="material-used" class="stat-value">0 g</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Layer Count:</span>
+                            <span id="layer-count" class="stat-value">0</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="upload-container">
