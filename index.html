@@ -244,7 +244,7 @@
             <!-- Print Control Panel -->
             <div id="print-controls" class="control-panel">
                 <button id="analyze-btn" class="cyber-button">Analyze Model</button>
-                <button id="slice-btn" class="cyber-button">Slice Model</button>
+                <button id="slice-btn" class="cyber-button" disabled>Slice Model</button>
                 <button id="start-print-btn" class="cyber-button">Start Print</button>
                 <button id="pause-print-btn" class="cyber-button" disabled>Pause</button>
                 <button id="resume-print-btn" class="cyber-button" disabled>Resume</button>
@@ -533,6 +533,7 @@
     <script src="./js/complexity-analyzer.js"></script>
     <script src="./js/material-visualizer.js"></script>
     <script src="./js/print-state-manager.js"></script>
+    <script src="./js/model-slicer.js"></script>
     <script src="./js/docs.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/demo.js"></script>
@@ -642,6 +643,27 @@
                     }
                 }
                 
+                // Initialize model slicer if available
+                if (window.ModelSlicer && !window.modelSlicer) {
+                    const modelContainer = document.getElementById('3d-visualizer');
+                    const visualizer = window.materialVisualizer;
+                    
+                    if (modelContainer && visualizer) {
+                        try {
+                            console.log("Initializing model slicer");
+                            window.modelSlicer = new ModelSlicer(modelContainer, visualizer);
+                            
+                            // Update terminal
+                            const terminal = document.getElementById('terminal-output');
+                            if (terminal) {
+                                terminal.innerHTML += '<br>> Model slicer initialized. Ready to slice models.';
+                            }
+                        } catch (e) {
+                            console.error("Error initializing model slicer:", e);
+                        }
+                    }
+                }
+                
                 // Show success message
                 const successMsg = document.createElement('div');
                 successMsg.style.position = 'fixed';
@@ -654,7 +676,7 @@
                 successMsg.style.zIndex = '9999';
                 successMsg.style.boxShadow = '0 0 15px rgba(0, 255, 140, 0.5)';
                 successMsg.style.fontWeight = 'bold';
-                successMsg.textContent = '✓ Material visualizer fixed and optimized';
+                successMsg.textContent = '✓ Material visualizer and slicer ready';
                 document.body.appendChild(successMsg);
                 
                 // Remove success message after 5 seconds

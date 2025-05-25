@@ -192,6 +192,9 @@ class MaterialVisualizer {
         
         // Add to scene
         this.scene.add(this.modelMesh);
+        
+        // Enable slice button
+        this.enableSliceButton();
       },
       (xhr) => {
         // Loading progress
@@ -242,6 +245,9 @@ class MaterialVisualizer {
       
       // Add to scene
       this.scene.add(this.modelMesh);
+      
+      // Enable slice button
+      this.enableSliceButton();
     };
     
     reader.onerror = (error) => {
@@ -249,6 +255,17 @@ class MaterialVisualizer {
     };
     
     reader.readAsArrayBuffer(file);
+  }
+  
+  /**
+   * Enable the slice button when a model is loaded
+   */
+  enableSliceButton() {
+    const sliceBtn = document.getElementById('slice-btn');
+    if (sliceBtn) {
+      sliceBtn.disabled = false;
+      sliceBtn.classList.remove('disabled');
+    }
   }
   
   /**
@@ -540,6 +557,9 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
         
         // Add LOD to scene
         this.scene.add(this.lod);
+        
+        // Enable slice button
+        this.enableSliceButton();
       },
       (xhr) => {
         // Loading progress
@@ -840,82 +860,6 @@ class OptimizedMaterialVisualizer extends MaterialVisualizer {
         this.modelMesh.material.flatShading = false;
       }
     }
-  }
-  
-  /**
-   * Enhanced model loading from File object
-   * @param {File} file - STL file object
-   */
-  loadModelFromFile(file) {
-    if (!window.THREE || !window.THREE.STLLoader) {
-      console.error('Three.js STLLoader is not available');
-      return;
-    }
-    
-    const reader = new FileReader();
-    
-    reader.onload = (event) => {
-      try {
-        const buffer = event.target.result;
-        
-        const loader = new THREE.STLLoader();
-        const geometry = loader.parse(buffer);
-        
-        // Clear existing model and LOD
-        if (this.modelMesh) {
-          this.scene.remove(this.modelMesh);
-          this.modelMesh = null;
-        }
-        
-        // Initialize lod if it doesn't exist
-        if (!this.lod) {
-          this.lod = new THREE.LOD();
-        } else {
-          this.lod.clear();
-        }
-        
-        // Center geometry
-        geometry.center();
-        
-        // Create LOD levels (with error handling)
-        try {
-          this.createLODLevels(geometry);
-        } catch (err) {
-          console.warn('Could not create LOD levels, falling back to simple model', err);
-          // Create simple model as fallback
-          const material = this.createMaterial();
-          this.modelMesh = new THREE.Mesh(geometry, material);
-          this.modelMesh.name = 'model-fallback';
-          this.scene.add(this.modelMesh);
-          return;
-        }
-        
-        // Set main model reference to highest LOD for compatibility
-        this.modelMesh = this.lod.getObjectByName('lod-high');
-        
-        // Scale model to fit view
-        this.fitModelToView(geometry);
-        
-        // Add LOD to scene
-        this.scene.add(this.lod);
-      } catch (error) {
-        console.error('Error processing model file:', error);
-        // Display error message to user
-        const terminalOutput = document.getElementById('terminal-output');
-        if (terminalOutput) {
-          const errorLine = document.createElement('div');
-          errorLine.className = 'terminal-line error';
-          errorLine.textContent = `> ERROR: Failed to load model: ${error.message}`;
-          terminalOutput.appendChild(errorLine);
-        }
-      }
-    };
-    
-    reader.onerror = (error) => {
-      console.error('Error reading file:', error);
-    };
-    
-    reader.readAsArrayBuffer(file);
   }
   
   /**
