@@ -866,4 +866,59 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize featured prints gallery
     initFeaturedPrintsGallery();
-}); 
+});
+
+// Load dependencies
+function loadDependencies() {
+  // ... existing code ...
+  
+  // Load model slicer
+  const slicerScript = document.createElement('script');
+  slicerScript.src = 'js/model-slicer.js';
+  slicerScript.async = true;
+  document.head.appendChild(slicerScript);
+  
+  // ... existing code ...
+}
+
+// Initialize components
+function initComponents() {
+  // ... existing code ...
+  
+  // Initialize model slicer if available
+  if (window.modelSlicer) {
+    console.log('Model slicer initialized');
+  }
+  
+  // ... existing code ...
+}
+
+// Handle model upload
+function handleModelUpload(event) {
+  // ... existing code ...
+  
+  // After model is loaded, enable slicer button
+  const sliceBtn = document.getElementById('slice-btn');
+  if (sliceBtn) {
+    sliceBtn.disabled = false;
+    sliceBtn.classList.remove('disabled');
+  }
+  
+  // ... existing code ...
+}
+
+// Add event listeners
+function addEventListeners() {
+  // ... existing code ...
+  
+  // Add event listener for slice button
+  const sliceBtn = document.getElementById('slice-btn');
+  if (sliceBtn) {
+    sliceBtn.addEventListener('click', () => {
+      // This is handled by the ModelSlicer class
+      // We just need to make sure the button is enabled when a model is loaded
+    });
+  }
+  
+  // ... existing code ...
+} 
